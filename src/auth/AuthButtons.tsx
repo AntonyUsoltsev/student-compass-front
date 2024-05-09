@@ -13,8 +13,14 @@ const AuthButtons = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
+            const initial = localStorage.getItem('initial')
             setLoggedIn(true);
-            setUserInitial(token.charAt(0));
+            if (initial) {
+                setUserInitial(initial.charAt(0));
+            } else {
+                setUserInitial(token.charAt(0));
+            }
+
         }
     }, []);
 
@@ -36,12 +42,14 @@ const AuthButtons = () => {
 
     const handleAuthenticationSuccess = (username: any) => {
         setLoggedIn(true);
+        localStorage.setItem('initial', username.charAt(0));
         setUserInitial(username.charAt(0));
         closeAuthModal();
     };
 
     const handleRegistrationSuccess = (username: any) => {
         setLoggedIn(true);
+        localStorage.setItem('initial', username.charAt(0));
         setUserInitial(username.charAt(0));
         closeRegisterModal();
     };

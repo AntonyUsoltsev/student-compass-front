@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Select, Button} from 'antd';
 import {useHistory} from 'react-router-dom';
 import './subject.css';
-import PostService from '../postService/PostService';
+import PostService from '../../postService/PostService';
 
 const SubjectList = ({university, course}: any) => {
     const [subjects, setSubjects] = useState([]);

@@ -15,13 +15,13 @@ const Header = () => {
     return (
         <header>
             <div>
-                <span className='logo' onClick={() => handleButtonClick("/")}>Student Compass</span>
+                <span className='logo' onClick={() => handleButtonClick("/student_compass")}>Student Compass</span>
 
                 <ul className='nav'>
-                    <li onClick={() => handleButtonClick("/chat")}>Чат</li>
-                    <li onClick={() => handleButtonClick("/tasks")}>Задачи</li>
-                    <li onClick={() => handleButtonClick("/materials")}>Материалы</li>
-                    <li onClick={() => handleButtonClick("/contacts")}>Контакты</li>
+                    <li onClick={() => handleButtonClick("/student_compass/chat")}>Чат</li>
+                    <li onClick={() => handleButtonClick("/student_compass/tasks")}>Задачи</li>
+                    <li onClick={() => handleButtonClick("/student_compass/materials")}>Материалы</li>
+                    <li onClick={() => handleButtonClick("/student_compass/contacts")}>Контакты</li>
                 </ul>
 
             </div>

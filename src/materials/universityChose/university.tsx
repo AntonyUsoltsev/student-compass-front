@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Row, Col, Spin} from 'antd';
 import {Link} from 'react-router-dom';
 import CourseList from '../courseChose/course';
-import PostService from '../postService/PostService';
+import PostService from '../../postService/PostService';
 import './university.css';
 
 const UniversityPage: React.FC = () => {

@@ -12,13 +12,14 @@ class App extends React.Component {
         return (
             <div className="wrapper">
                 <Header></Header>
+                <AuthButtons/>
                 <BrowserRouter>
-                    <AuthButtons/>
                     <Switch>
                         <Route path="/student_compass/:university/:course/:subject" component={BookListPage}/>
-                        <Route path="/materials" component={UniversityPage}/>
-                        {/*<Route path="/catalog" component={catalogPage}/>*/}
-                        <Route path="/contacts" component={contactPage}/>
+                        <Route path="/student_compass/materials" component={UniversityPage}/>
+                        {/*<Route path="/student_compass/chat" component={chatPage}/>*/}
+                        <Route path="/student_compass/contacts" component={contactPage}/>
+                        <Route path="/student_compass"/>
                     </Switch>
                 </BrowserRouter>
             </div>

@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button} from 'antd';
 import SubjectList from "../subjectChose/subject";
-import PostService from '../postService/PostService';
+import PostService from '../../postService/PostService';
 import "./course.css";
 
 const CourseList = ({university, selectedCourse, setSelectedCourse}: any) => {

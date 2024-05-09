@@ -12,11 +12,11 @@ const AuthForm = ({onAuthenticationSuccess}:any) => {
         axios
             .post(endpoint, values)
             .then((response) => {
+                localStorage.setItem('token', response.data.token);
+                const username = response.data.name;
+                onAuthenticationSuccess(username);
                 console.log('Успешная авторизация:', response.data);
                 message.success('Успешная авторизация');
-                localStorage.setItem('token', response.data.token);
-                const username = values.email;
-                onAuthenticationSuccess(username);
             })
             .catch((error) => {
                 console.error('Ошибка авторизации:', error);

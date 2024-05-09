@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {List, Button, message, Spin, Form, Modal} from 'antd';
-import PostService from "../postService/PostService";
+import PostService from "../../postService/PostService";
 import ReviewList from "../reviewList/ReviewList";
 import AddMaterialForm from "./AddMaterailForm";
 import { useParams} from "react-router-dom";

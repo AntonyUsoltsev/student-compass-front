@@ -12,11 +12,11 @@ const RegisterForm = ({onRegistrationSuccess}:any) => {
         axios
             .post(endpoint, values)
             .then((response) => {
-                console.log('Успешная регистрация:', response.data);
-                message.success('Успешная регистрация');
                 localStorage.setItem('token', response.data.token);
                 // Вызовите колбэк для закрытия модального окна
                 const username = values.firstname;
+                console.log('Успешная регистрация:', response.data);
+                message.success('Успешная регистрация');
                 onRegistrationSuccess(username);
             })
             .catch((error) => {
@@ -30,7 +30,7 @@ const RegisterForm = ({onRegistrationSuccess}:any) => {
             <Form.Item name="firstname" rules={[{required: true, message: 'Введите Имя'}]}>
                 <Input placeholder="Имя"/>
             </Form.Item>
-            <Form.Item name="secondname" rules={[{required: true, message: 'Введите Фамилию'}]}>
+            <Form.Item name="lastname" rules={[{required: true, message: 'Введите Фамилию'}]}>
                 <Input placeholder="Фамилия"/>
             </Form.Item>
             <Form.Item name="email" rules={[{required: true, message: 'Введите адрес эл. почты'}]}>
