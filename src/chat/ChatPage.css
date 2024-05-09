@@ -1,0 +1,22 @@
+/* ChatPage.css */
+.chat-page {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.search-users {
+    width: 200px;
+}
+
+.recent-chats {
+    width: 300px;
+}
+
+.chat-window {
+    flex-grow: 1;
+}
+
+.message {
+    margin-bottom: 10px;
+}

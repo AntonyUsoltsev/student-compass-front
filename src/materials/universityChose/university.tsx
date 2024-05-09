@@ -36,8 +36,11 @@ const UniversityPage: React.FC = () => {
                      style={{maxWidth: '100%', marginLeft: '0', marginRight: '0'}}>
                     {universities.map((university: any, index) => (
                         <Col key={index} xs={24} sm={12} md={8} lg={4}>
-                            <div onClick={() => handleUniversityClick(university)}>
-                                <Link to={university.link}>
+                            <div onClick={() => {
+                                handleUniversityClick(university)
+                                console.log("university click")
+                            }}>
+                                <Link to={university}>
                                     <img src={university.imageUrl} alt={university.name} className="icon"/>
                                 </Link>
                             </div>

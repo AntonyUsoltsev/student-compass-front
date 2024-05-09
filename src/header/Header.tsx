@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {FaShoppingCart} from "react-icons/fa";
 import {useHistory} from "react-router-dom";
 import "../header/Header.css"
+import AuthButtons from "../auth/AuthButtons";
 
 const Header = () => {
 
@@ -15,6 +16,7 @@ const Header = () => {
     return (
         <header>
             <div>
+                <AuthButtons/>
                 <span className='logo' onClick={() => handleButtonClick("/student_compass")}>Student Compass</span>
 
                 <ul className='nav'>

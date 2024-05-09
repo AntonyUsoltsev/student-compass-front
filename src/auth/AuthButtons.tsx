@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Space, Row, Avatar} from 'antd';
+import {Button, Space, Avatar} from 'antd';
 import AuthModal from './AuthModal';
 import RegisterModal from './RegisterModal';
 
@@ -64,7 +64,7 @@ const AuthButtons = () => {
     const avatarStyle = {cursor: 'pointer', fontSize: '24px',};
 
     return (
-        <Row justify="end" align="top" style={{position: 'fixed', top: 10, right: 10}}>
+        <div style={{float: "right"}}>
             <div onClick={() => setAvatarClicked(true)} style={avatarStyle}>
                 {isLoggedIn ? (
                     <div>
@@ -93,7 +93,7 @@ const AuthButtons = () => {
                        onAuthenticationSuccess={handleAuthenticationSuccess}/>
             <RegisterModal visible={registerModalVisible} onClose={closeRegisterModal}
                            onRegistrationSuccess={handleRegistrationSuccess}/>
-        </Row>
+        </div>
     );
 };
 

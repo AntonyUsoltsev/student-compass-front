@@ -2,24 +2,24 @@ import React from 'react';
 import './App.css';
 import {BrowserRouter, BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Header from "./header/Header";
-import AuthButtons from "./auth/AuthButtons";
 import BookListPage from "./materials/materialList/MaterislList";
-import contactPage from "./contacts/ContactPage";
 import UniversityPage from "./materials/universityChose/university";
+import ChatPage from "./chat/ChatPage";
+import ContactPage from "./contacts/ContactPage";
 
 class App extends React.Component {
     render() {
         return (
             <div className="wrapper">
                 <Header></Header>
-                <AuthButtons/>
+
                 <BrowserRouter>
                     <Switch>
                         <Route path="/student_compass/:university/:course/:subject" component={BookListPage}/>
                         <Route path="/student_compass/materials" component={UniversityPage}/>
-                        {/*<Route path="/student_compass/chat" component={chatPage}/>*/}
-                        <Route path="/student_compass/contacts" component={contactPage}/>
-                        <Route path="/student_compass"/>
+                        <Route path="/student_compass/chat" component={ChatPage}/>
+                        <Route path="/student_compass/contacts" component={ContactPage}/>
+                        {/*<Route path="/student_compass"/>*/}
                     </Switch>
                 </BrowserRouter>
             </div>
