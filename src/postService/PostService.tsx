@@ -56,16 +56,76 @@ export default class PostService {
             this.errorHandler(error);
         }
     }
-    static async getReviews(universityName: any, courseValue: any, selectedSubject: any) {
+
+    static async postAuth(values: any) {
+        console.log(`http://localhost:8080/auth/student_compass/authenticate`)
         try {
-            const value = await axios.get(`http://localhost:8080/student_compass/${universityName}/${courseValue}/${selectedSubject}/reviews`);
+            const value = await axios.post(`http://localhost:8080/auth/student_compass/authenticate`, values);
             console.log(value)
             return value;
         } catch (error) {
             this.errorHandler(error);
         }
     }
-    static async postReview(){
 
+    static async postRegister(values: any) {
+        console.log(`http://localhost:8080/auth/student_compass/register`)
+        try {
+            const value = await axios.post(`http://localhost:8080/auth/student_compass/register`, values);
+            console.log(value)
+            return value;
+        } catch (error) {
+            this.errorHandler(error);
+        }
+    }
+
+
+    static async postReview(selectedSubject: any, token: any, newReviewText: any) {
+        try {
+            const value = await axios.post(`http://localhost:8080/auth/review/${selectedSubject}`, {
+                text: newReviewText,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            console.log(value)
+            return value;
+        } catch (error) {
+            this.errorHandler(error);
+        }
+
+    }
+
+    static async getTasks() {
+        console.log(`http://localhost:8080/student_compass/tasks`)
+        try {
+            const value = await axios.get(`http://localhost:8080/student_compass/tasks`);
+            console.log(value)
+            return value;
+        } catch (error) {
+            this.errorHandler(error);
+        }
+    }
+
+    static async getAllSubjects() {
+        console.log(`http://localhost:8080/student_compass/`)
+        try {
+            const value = await axios.get(`http://localhost:8080/student_compass/`);
+            console.log(value)
+            return value;
+        } catch (error) {
+            this.errorHandler(error);
+        }
+    }
+    static async createTask() {
+        console.log(`http://localhost:8080/student_compass/create_task`)
+        try {
+            const value = await axios.put(`http://localhost:8080/student_compass/create_task`);
+            console.log(value)
+            return value;
+        } catch (error) {
+            this.errorHandler(error);
+        }
     }
 }

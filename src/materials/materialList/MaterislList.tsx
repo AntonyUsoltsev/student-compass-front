@@ -3,14 +3,14 @@ import {List, Button, message, Spin, Form, Modal} from 'antd';
 import PostService from "../../postService/PostService";
 import ReviewList from "../reviewList/ReviewList";
 import AddMaterialForm from "./AddMaterailForm";
-import { useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import "./MaterialStyle.css";
 
 import axios from "axios";
 
 const BookList = () => {
     const [data, setData]: any = useState();
-    const [books, setBooks]: any = useState([]);
+    const [books, setBooks]: any = useState<any[]>([]);
     const [reviews, setReviews]: any = useState([]);
     const [loading, setLoading] = useState(true);
     const [form] = Form.useForm();
@@ -20,7 +20,6 @@ const BookList = () => {
 
 
     useEffect(() => {
-        // Загрузка списка книг для выбранного предмета
         PostService.getBooks(university, course, subject).then((response: any) => {
             const inputData = response.data;
             setData(inputData);
@@ -32,12 +31,9 @@ const BookList = () => {
 
     const handleDownload = (bookLink: any) => {
         const isUserAuthenticated = checkUserAuthentication();
-
         if (isUserAuthenticated) {
-            // Выполнить скачивание книги
             handleView(bookLink);
         } else {
-            // Показать предупреждение
             showWarning();
         }
     };
@@ -54,7 +50,7 @@ const BookList = () => {
         message.warning('Для просмотра необходимо авторизоваться.');
     };
 
-    const   handleAddMaterial = (values:any) => {
+    const handleAddMaterial = (values: any) => {
         const {author, name, link} = values;
         const token = localStorage.getItem('token');
 
@@ -75,18 +71,18 @@ const BookList = () => {
             },
         })
             .then(response => {
-                message.success('Материал успешно добавлен.');
                 // Обновление списка материалов после успешной отправки
                 setBooks([...books, response.data.materials[0]]);
                 // Очистка полей ввода
                 form.resetFields();
+                message.success('Материал успешно добавлен.');
             })
             .catch(error => {
                 console.error('Ошибка при добавлении материала:', error);
                 message.error('Ошибка при добавлении материала. Пожалуйста, попробуйте еще раз.');
             });
     };
-    const handleView = (link:any) => {
+    const handleView = (link: any) => {
         window.open(link, '_blank'); // Открываем ссылку в новой вкладке
     };
     const showModal = () => {
@@ -98,26 +94,23 @@ const BookList = () => {
     };
 
     return (
-        <div>
+        <div className="material-wrapper">
             {loading ? (
                 <Spin size="large"/>
             ) : (
                 <>
                     <header className="subjects-header">Список книг для предмета {data.name}</header>
-                    <List
-                        dataSource={books}
-                        renderItem={(item: any) => (
-                            <List.Item>
+
+                    {books.map((item: any, index: any) => (
+                        <div key={index}>
+                            <button className={`accordion`} onClick={() => handleDownload(item.link)}>
                                 {item.name} - {item.author}
-                                <Button onClick={() => handleDownload(item.link)}
-                                        style={{marginLeft: '20px'}}>Посмотреть</Button>
-                            </List.Item>
-                        )}
-                    />
+                                <i className="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    ))}
 
-
-                    {/* Форма для ввода нового материала */}
-                    <Button type="primary" onClick={showModal} style={{marginTop: '20px', alignContent: "center"}}>
+                    <Button type="primary" onClick={showModal} style={{marginTop: '10px', alignContent: "center",  marginLeft: '40%' }}>
                         Добавить материал
                     </Button>
 

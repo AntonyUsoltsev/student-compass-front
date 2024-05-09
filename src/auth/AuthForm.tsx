@@ -2,16 +2,11 @@
 import React from 'react';
 import {Form, Input, Button, message} from 'antd';
 import axios from 'axios';
+import PostService from "../postService/PostService";
 
-const AuthForm = ({onAuthenticationSuccess}:any) => {
+const AuthForm = ({onAuthenticationSuccess}: any) => {
     const onFinish = (values: any) => {
-        // Здесь обработайте отправку данных на бэкенд для авторизации
-        // Используйте axios или другую библиотеку для выполнения запроса к вашему API
-        const endpoint = 'http://localhost:8080/auth/student_compass/authenticate';
-
-        axios
-            .post(endpoint, values)
-            .then((response) => {
+        PostService.postAuth(values).then((response: any) => {
                 localStorage.setItem('token', response.data.token);
                 const username = response.data.name;
                 onAuthenticationSuccess(username);

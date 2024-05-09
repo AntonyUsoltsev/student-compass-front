@@ -6,6 +6,7 @@ import BookListPage from "./materials/materialList/MaterislList";
 import UniversityPage from "./materials/universityChose/university";
 import ChatPage from "./chat/ChatPage";
 import ContactPage from "./contacts/ContactPage";
+import TasksPage from "./tasksPage/TasksPage";
 
 class App extends React.Component {
     render() {
@@ -19,7 +20,8 @@ class App extends React.Component {
                         <Route path="/student_compass/materials" component={UniversityPage}/>
                         <Route path="/student_compass/chat" component={ChatPage}/>
                         <Route path="/student_compass/contacts" component={ContactPage}/>
-                        {/*<Route path="/student_compass"/>*/}
+                        <Route path="/student_compass/tasks" component={TasksPage}/>
+                        <Route path="/student_compass"/>
                     </Switch>
                 </BrowserRouter>
             </div>

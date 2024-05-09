@@ -3,8 +3,9 @@ import {List, Avatar, Button, message} from 'antd';
 import "./ReviewStyle.css"
 import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
+import PostService from "../../postService/PostService";
 
-const ReviewList = ({selectedSubject, selectedSubjectName, inputReviews}:any) => {
+const ReviewList = ({selectedSubject, selectedSubjectName, inputReviews}: any) => {
     const [reviews, setReviews] = useState([]);
     const [newReviewText, setNewReviewText] = useState('');
 
@@ -13,31 +14,17 @@ const ReviewList = ({selectedSubject, selectedSubjectName, inputReviews}:any) =>
         setReviews(inputReviews)
     }, [selectedSubject]);
     const handleReviewSubmit = () => {
-        // Получение токена из localStorage
         const token = localStorage.getItem('token');
-
-        // Проверка наличия токена
         if (!token) {
             message.warning('Чтобы оставить отзыв, необходимо авторизоваться.');
             return;
         }
-
-        // Отправка запроса на бэкэнд с текстом отзыва и токеном пользователя
-        axios.post(`http://localhost:8080/auth/review/${selectedSubject}`, {
-            text: newReviewText,
-        }, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+        PostService.postReview(selectedSubject, token, newReviewText).then(response => {
+            message.success('Отзыв успешно добавлен.');
+            // @ts-ignore
+            setReviews([...reviews, response.data.reviews[0]]);
+            setNewReviewText('');
         })
-            .then(response => {
-                message.success('Отзыв успешно добавлен.');
-                // Обновление списка отзывов после успешной отправки
-                // @ts-ignore
-                setReviews([...reviews, response.data.reviews[0]]);
-                // Очистка поля ввода
-                setNewReviewText('');
-            })
             .catch(error => {
                 console.error('Ошибка при добавлении отзыва:', error);
                 message.error('Ошибка при добавлении отзыва. Пожалуйста, попробуйте еще раз.');
@@ -45,10 +32,6 @@ const ReviewList = ({selectedSubject, selectedSubjectName, inputReviews}:any) =>
     };
 
 
-    // @ts-ignore
-    // @ts-ignore
-    // @ts-ignore
-    // @ts-ignore
     return (
         <div>
             <header className="reviews-header">Отзывы по предмету {selectedSubjectName}</header>
@@ -66,7 +49,7 @@ const ReviewList = ({selectedSubject, selectedSubjectName, inputReviews}:any) =>
             <List
                 itemLayout="horizontal"
                 dataSource={reviews}
-                renderItem={(review :any) => (
+                renderItem={(review: any) => (
                     <List.Item>
                         <List.Item.Meta
                             avatar={<Avatar>{review.user.firstName.charAt(0)}</Avatar>}
