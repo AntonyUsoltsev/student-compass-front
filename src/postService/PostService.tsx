@@ -97,6 +97,25 @@ export default class PostService {
 
     }
 
+    static async postMaterial(author: any, name: any, link: any, token: any, subject: any) {
+        console.log(`http://localhost:8080/auth/material/${subject}`)
+        try {
+            const value = await axios.put(`http://localhost:8080/auth/material/${subject}`, {
+                author: author,
+                name: name,
+                link: link,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(value)
+            return value;
+        } catch (error) {
+            this.errorHandler(error);
+        }
+    }
+
     static async getTasks() {
         console.log(`http://localhost:8080/student_compass/tasks`)
         try {
@@ -108,20 +127,58 @@ export default class PostService {
         }
     }
 
-    static async getAllSubjects() {
-        console.log(`http://localhost:8080/student_compass/`)
+    //TODO
+    // static async getAllSubjects() {
+    //     console.log(`http://localhost:8080/student_compass/`)
+    //     try {
+    //         const value = await axios.get(`http://localhost:8080/student_compass/`);
+    //         console.log(value)
+    //         return value;
+    //     } catch (error) {
+    //         this.errorHandler(error);
+    //     }
+    // }
+
+
+    static async createTask(title: any, description: any, startPrice: any, subject: any, token: any) {
+        console.log(`http://localhost:8080/student_compass/create_task`)
         try {
-            const value = await axios.get(`http://localhost:8080/student_compass/`);
+            const value = await axios.put(`http://localhost:8080/student_compass/create_task`, {
+                title: title,
+                description: description,
+                startPrice: startPrice,
+                subject: subject
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             console.log(value)
             return value;
         } catch (error) {
             this.errorHandler(error);
         }
     }
-    static async createTask() {
-        console.log(`http://localhost:8080/student_compass/create_task`)
+
+    static async getOffersForTask(taskId: any) {
+        console.log(`http://localhost:8080/student_compass/get_offers?taskId=${taskId}`)
         try {
-            const value = await axios.put(`http://localhost:8080/student_compass/create_task`);
+            const value = await axios.get(`http://localhost:8080/student_compass/get_offers?taskId=${taskId}`);
+            console.log(value)
+            return value;
+        } catch (error) {
+            this.errorHandler(error);
+        }
+    }
+
+    static async getChats(token: string) {
+        console.log(`http://localhost:8080/chat/all`)
+        try {
+            const value = await axios.get(`http://localhost:8080/chat/all`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             console.log(value)
             return value;
         } catch (error) {

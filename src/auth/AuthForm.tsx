@@ -1,7 +1,5 @@
-// AuthForm.jsx
 import React from 'react';
 import {Form, Input, Button, message} from 'antd';
-import axios from 'axios';
 import PostService from "../postService/PostService";
 
 const AuthForm = ({onAuthenticationSuccess}: any) => {

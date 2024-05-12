@@ -2,12 +2,13 @@ import React, {useEffect, useState} from "react";
 import "../tasksPage/TaskPage.css";
 import PostService from "../postService/PostService";
 import {Button, Form, message, Modal} from "antd";
-import axios from "axios";
 import TaskForm from "./TaskForm";
+import OffersPage from "./OffersPage";
 
 const TasksPage: React.FC = () => {
     const [activeIndexes, setActiveIndexes] = useState<number[]>([]);
     const [tasks, setTasks] = useState<any[]>([]);
+    const [subjects, setSubjects] = useState<any[]>([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
 
@@ -33,7 +34,7 @@ const TasksPage: React.FC = () => {
     };
 
     const handleAddTask = (values: any) => {
-        const {author, name, link} = values;
+        const {title, description, startPrice, subject} = values;
         const token = localStorage.getItem('token');
 
         // Проверка наличия токена
@@ -42,20 +43,9 @@ const TasksPage: React.FC = () => {
             return;
         }
 
-        // Отправка запроса на бэкэнд с данными нового материала и токеном пользователя
-        axios.post(`http://localhost:8080/student_compass/create_task}`, {
-            author: author,
-            name: name,
-            link: link,
-        }, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then(response => {
-                // Обновление списка материалов после успешной отправки
+        PostService.createTask(title, description, startPrice, subject, token)
+            .then((response: any) => {
                 setTasks([...tasks, response.data.materials[0]]);
-                // Очистка полей ввода
                 form.resetFields();
                 message.success('Задача успешно добавлена.');
             })
@@ -67,13 +57,13 @@ const TasksPage: React.FC = () => {
 
     return (
         <div>
-            <Button type="primary" onClick={showModal} style={{marginTop: '10px', alignContent: "center",  marginLeft: '40%' }}>
-                Добавить материал
+            <Button type="primary" onClick={showModal} style={{marginBottom: '25px', alignContent: "center"}}>
+                Добавить новую задачу
             </Button>
 
             {/* Модальное окно для ввода нового материала */}
             <Modal
-                title="Добавить новый материал"
+                title="Добавить новую задачу"
                 visible={isModalVisible}
                 onCancel={handleCancel}
                 footer={null}
@@ -90,9 +80,11 @@ const TasksPage: React.FC = () => {
                         {task.title}
                         <i className="fas fa-angle-down"></i>
                     </button>
-                    <div className="panel" style={{display: activeIndexes.includes(index) ? "block" : "none"}}>
+                    <div className="panel" style={{display: activeIndexes.includes(index) ? "block" : "none", backgroundColor: " #e0e0e0"}}>
                         <p style={{marginBottom: "20px"}}>Описание: {task.description}</p>
                         <p style={{marginBottom: "20px"}}>Стартовая цена: {task.startPrice}</p>
+                        <p style={{marginBottom: "20px"}}>Предмет: {task.subjectName}</p>
+                        <OffersPage taskId={task.id}/>
                     </div>
                 </div>
             ))}

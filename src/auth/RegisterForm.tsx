@@ -1,7 +1,5 @@
-// RegisterForm.jsx
 import React from 'react';
-import {Form, Input, Button, message} from 'antd';
-import axios from 'axios';
+import {Button, Form, Input, message} from 'antd';
 import PostService from "../postService/PostService";
 
 const RegisterForm = ({onRegistrationSuccess}: any) => {
@@ -10,9 +8,9 @@ const RegisterForm = ({onRegistrationSuccess}: any) => {
             localStorage.setItem('token', response.data.token);
             // Вызовите колбэк для закрытия модального окна
             const username = values.firstname;
+            onRegistrationSuccess(username);
             console.log('Успешная регистрация:', response.data);
             message.success('Успешная регистрация');
-            onRegistrationSuccess(username);
         })
             .catch((error) => {
                 console.error('Ошибка регистрации:', error);

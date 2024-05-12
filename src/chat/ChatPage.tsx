@@ -1,22 +1,33 @@
-import React, { useState, useEffect } from "react";
-import "./ChatPage.css"; // Подключаем файл стилей для страницы чата
+import React, {useState, useEffect} from "react";
+import "./ChatPage.css";
+import PostService from "../postService/PostService";
+import {Avatar, message} from "antd"; // Подключаем файл стилей для страницы чата
 
 const ChatPage: React.FC = () => {
     // Состояния для списка пользователей, последних чатов, выбранного чата и текста сообщения
-    const [users, setUsers] = useState([]);
     const [chats, setChats] = useState([]);
     const [selectedChat, setSelectedChat] = useState(null);
     const [messageText, setMessageText] = useState("");
 
     // Функция для загрузки данных (пользователей и чатов) из базы данных
     useEffect(() => {
-        // Ваш код для загрузки данных из базы данных
-        // Пример:
-        // const fetchedUsers = fetchDataFromDatabase("users");
-        // const fetchedChats = fetchDataFromDatabase("chats");
-        // setUsers(fetchedUsers);
-        // setChats(fetchedChats);
+        const token = localStorage.getItem('token');
+        console.log(token)
+        if (!token) {
+            message.warning('Чтобы просмотреть чат, необходимо авторизоваться.');
+            return;
+        }
+        PostService.getChats(token).then((response: any) => {
+            setChats(response.data);
+        });
     }, []);
+
+
+    const handleSelectedChatClick = (chat: any) => {
+        console.log(chat);
+        setSelectedChat(chat);
+
+    }
 
     // Функция для отправки сообщения
     const sendMessage = () => {
@@ -29,19 +40,20 @@ const ChatPage: React.FC = () => {
 
     return (
         <div className="chat-page">
-            {/* Секция для поиска пользователей */}
-            <div className="search-users">
-                {/* Ваш код для поля поиска пользователей */}
-            </div>
-
-            {/* Секция для списка последних чатов */}
             <div className="recent-chats">
-                {/* Ваш код для отображения списка последних чатов */}
+                <h2>Последние чаты</h2>
+                <ul>
+                    {chats.map((chat: any) => (
+                        <div className="chat-button" onClick={() => handleSelectedChatClick(chat)}>
+                            <Avatar style={{backgroundColor: '#87d068', marginRight: '10px'}}>{chat.name[0]}</Avatar>
+                            <span>{chat.name}</span>
+                        </div>
+                    ))}
+                </ul>
             </div>
 
-            {/* Секция для отображения выбранного чата */}
+
             <div className="chat-window">
-                {/* Проверяем, выбран ли какой-то чат */}
                 {selectedChat && (
                     <div>
                         {/* Ваш код для отображения сообщений выбранного чата */}

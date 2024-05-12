@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {Form, Input, Button} from 'antd';
-import PostService from "../postService/PostService";
+import React, {useState} from 'react';
+import {Button, Form, Input} from 'antd';
 
-const TaskForm = ({onFinish}:any) => {
+const TaskForm = ({onFinish}: any) => {
     const [form] = Form.useForm();
     const [subjects, setSubjects] = useState<any[]>([]);
 
-    useEffect(() => {
-        PostService.getSubjects().then((response: any) => {
-            setSubjects(response.data);
-        });
-    }, []);
+    //TODO:
+    // useEffect(() => {
+    //     PostService.getAllSubjects().then((response: any) => {
+    //         setSubjects(response.data);
+    //     });
+    // }, []);
 
 
     return (
@@ -23,25 +23,25 @@ const TaskForm = ({onFinish}:any) => {
                 name="title"
                 rules={[{required: true, message: 'Пожалуйста, введите заголовок'}]}
             >
-                < Input placeholder="Введите автора"/>
+                < Input placeholder="Введите заголовок"/>
             </Form.Item>
             <Form.Item
                 name="description"
                 rules={[{required: true, message: 'Пожалуйста, введите описание'}]}
             >
-                < Input placeholder="Введите название"/>
+                < Input placeholder="Введите описание"/>
             </Form.Item>
             <Form.Item
                 name="price"
                 rules={[{required: true, message: 'Пожалуйста, введите стартовую цену'}]}
             >
-                < Input placeholder="Введите ссылку для просмотра материала"/>
+                < Input placeholder="Введите стартовую цену"/>
             </Form.Item>
             <Form.Item
                 name="subject"
                 rules={[{required: true, message: 'Пожалуйста, введите предмет'}]}
             >
-                < Input placeholder="Введите ссылку для просмотра материала"/>
+                < Input placeholder="Введите название предмета"/>
             </Form.Item>
             <Form.Item>
                 <Button type="primary" htmlType="submit">

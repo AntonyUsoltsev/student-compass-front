@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {List, Avatar, Button, message} from 'antd';
 import "./ReviewStyle.css"
 import TextArea from "antd/es/input/TextArea";
-import axios from "axios";
 import PostService from "../../postService/PostService";
 
 const ReviewList = ({selectedSubject, selectedSubjectName, inputReviews}: any) => {
@@ -20,10 +19,10 @@ const ReviewList = ({selectedSubject, selectedSubjectName, inputReviews}: any) =
             return;
         }
         PostService.postReview(selectedSubject, token, newReviewText).then(response => {
-            message.success('Отзыв успешно добавлен.');
             // @ts-ignore
             setReviews([...reviews, response.data.reviews[0]]);
             setNewReviewText('');
+            message.success('Отзыв успешно добавлен.');
         })
             .catch(error => {
                 console.error('Ошибка при добавлении отзыва:', error);

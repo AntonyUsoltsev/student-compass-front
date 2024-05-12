@@ -1,12 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {List, Button, message, Spin, Form, Modal} from 'antd';
+import {Button, message, Spin, Form, Modal} from 'antd';
 import PostService from "../../postService/PostService";
 import ReviewList from "../reviewList/ReviewList";
 import AddMaterialForm from "./AddMaterailForm";
 import {useParams} from "react-router-dom";
 import "./MaterialStyle.css";
-
-import axios from "axios";
 
 const BookList = () => {
     const [data, setData]: any = useState();
@@ -61,19 +59,9 @@ const BookList = () => {
         }
 
         // Отправка запроса на бэкэнд с данными нового материала и токеном пользователя
-        axios.post(`http://localhost:8080/auth/material/${subject}`, {
-            author: author,
-            name: name,
-            link: link,
-        }, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then(response => {
-                // Обновление списка материалов после успешной отправки
+        PostService.postMaterial(author, name, link, token, subject)
+            .then((response: any) => {
                 setBooks([...books, response.data.materials[0]]);
-                // Очистка полей ввода
                 form.resetFields();
                 message.success('Материал успешно добавлен.');
             })
@@ -110,7 +98,8 @@ const BookList = () => {
                         </div>
                     ))}
 
-                    <Button type="primary" onClick={showModal} style={{marginTop: '10px', alignContent: "center",  marginLeft: '40%' }}>
+                    <Button type="primary" onClick={showModal}
+                            style={{marginTop: '10px', alignContent: "center", marginLeft: '40%'}}>
                         Добавить материал
                     </Button>
 
