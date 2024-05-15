@@ -53,7 +53,7 @@ const ContactPage: React.FC = () => {
                     rel="noopener noreferrer"
                     className={'link'}
                 >
-                    Просто хороший чел
+                    Лучший.
                 </a>
 
             </div>

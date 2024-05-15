@@ -27,10 +27,16 @@
     border: 1px solid #939090;
     padding: 15px 20px;
     margin-bottom: 10px;
+    position: relative;
 }
 
 .active, .accordion:hover {
     background-color: #ccc;
+}
+
+.your-task {
+    color: green;
+    margin-left: auto; /* Add this */
 }
 
 .panel {

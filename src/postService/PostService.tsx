@@ -116,7 +116,7 @@ export default class PostService {
         }
     }
 
-    static async getTasks(token:any) {
+    static async getTasks(token: any) {
         console.log(`http://localhost:8080/student_compass/tasks`)
         try {
             const value = await axios.get(`http://localhost:8080/student_compass/tasks`, {
@@ -144,7 +144,7 @@ export default class PostService {
 
 
     static async createTask(title: any, description: any, startPrice: any, subject: any, token: any) {
-        console.log(`http://localhost:8080/student_compass/create_task`, title, description,startPrice,subject)
+        console.log(`http://localhost:8080/student_compass/create_task`, title, description, startPrice, subject)
         try {
             const value = await axios.put(`http://localhost:8080/student_compass/create_task`, {
                 title: title,
@@ -167,6 +167,22 @@ export default class PostService {
         console.log(`http://localhost:8080/student_compass/get_offers?taskId=${taskId}`)
         try {
             const value = await axios.get(`http://localhost:8080/student_compass/get_offers?taskId=${taskId}`);
+            console.log(value)
+            return value;
+        } catch (error) {
+            this.errorHandler(error);
+        }
+    }
+
+    static async createOffer(taskId: any, price: any, token: string) {
+        console.log(`http://localhost:8080/student_compass/task/add_offer?taskId=${taskId}&price=${price}`)
+        try {
+            const value = await axios.post(`http://localhost:8080/student_compass/task/add_offer?taskId=${taskId}&price=${price}`,
+                {}, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
             console.log(value)
             return value;
         } catch (error) {
@@ -209,9 +225,7 @@ export default class PostService {
         console.log(`http://localhost:8080/chat/all`)
         try {
             const value = await axios.put(`http://localhost:8080/chat`,
-                {
-
-                }, {
+                {}, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -222,4 +236,6 @@ export default class PostService {
             this.errorHandler(error);
         }
     }
+
+
 }
