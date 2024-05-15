@@ -116,10 +116,14 @@ export default class PostService {
         }
     }
 
-    static async getTasks() {
+    static async getTasks(token:any) {
         console.log(`http://localhost:8080/student_compass/tasks`)
         try {
-            const value = await axios.get(`http://localhost:8080/student_compass/tasks`);
+            const value = await axios.get(`http://localhost:8080/student_compass/tasks`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             console.log(value)
             return value;
         } catch (error) {
@@ -127,27 +131,26 @@ export default class PostService {
         }
     }
 
-    //TODO
-    // static async getAllSubjects() {
-    //     console.log(`http://localhost:8080/student_compass/`)
-    //     try {
-    //         const value = await axios.get(`http://localhost:8080/student_compass/`);
-    //         console.log(value)
-    //         return value;
-    //     } catch (error) {
-    //         this.errorHandler(error);
-    //     }
-    // }
+    static async getAllSubjects() {
+        console.log(`http://localhost:8080/student_compass/get_subjects`)
+        try {
+            const value = await axios.get(`http://localhost:8080/student_compass/get_subjects`);
+            console.log(value)
+            return value;
+        } catch (error) {
+            this.errorHandler(error);
+        }
+    }
 
 
     static async createTask(title: any, description: any, startPrice: any, subject: any, token: any) {
-        console.log(`http://localhost:8080/student_compass/create_task`)
+        console.log(`http://localhost:8080/student_compass/create_task`, title, description,startPrice,subject)
         try {
             const value = await axios.put(`http://localhost:8080/student_compass/create_task`, {
                 title: title,
                 description: description,
                 startPrice: startPrice,
-                subject: subject
+                subjectName: subject
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -179,6 +182,40 @@ export default class PostService {
                     Authorization: `Bearer ${token}`,
                 },
             });
+            console.log(value)
+            return value;
+        } catch (error) {
+            this.errorHandler(error);
+        }
+    }
+
+
+    static async getLastMessages(id: any, token: string) {
+        console.log(`http://localhost:8080/chat/all`)
+        try {
+            const value = await axios.get(`http://localhost:8080/chat?chatId=${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(value)
+            return value;
+        } catch (error) {
+            this.errorHandler(error);
+        }
+    }
+
+    static async putMessage(id: any, token: string, text: any) {
+        console.log(`http://localhost:8080/chat/all`)
+        try {
+            const value = await axios.put(`http://localhost:8080/chat`,
+                {
+
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
             console.log(value)
             return value;
         } catch (error) {

@@ -1,47 +1,58 @@
-import React, {useState} from 'react';
-import {Button, Form, Input} from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Form, Input, Select } from 'antd';
+import PostService from "../postService/PostService";
 
-const TaskForm = ({onFinish}: any) => {
+const { Option } = Select;
+
+const TaskForm = ({ onFinish }: any) => {
     const [form] = Form.useForm();
     const [subjects, setSubjects] = useState<any[]>([]);
 
-    //TODO:
-    // useEffect(() => {
-    //     PostService.getAllSubjects().then((response: any) => {
-    //         setSubjects(response.data);
-    //     });
-    // }, []);
+    useEffect(() => {
+        PostService.getAllSubjects().then((response: any) => {
+            setSubjects(response.data);
+        });
+    }, []);
 
+
+    const handleFormSubmit = (values: any) => {
+        form.resetFields();
+        onFinish(values);
+    };
 
     return (
         <Form
             name="addTask"
-            onFinish={onFinish}
+            onFinish={handleFormSubmit}
             form={form}
         >
             <Form.Item
                 name="title"
-                rules={[{required: true, message: 'Пожалуйста, введите заголовок'}]}
+                rules={[{ required: true, message: 'Пожалуйста, введите заголовок' }]}
             >
-                < Input placeholder="Введите заголовок"/>
+                <Input placeholder="Введите заголовок" />
             </Form.Item>
             <Form.Item
                 name="description"
-                rules={[{required: true, message: 'Пожалуйста, введите описание'}]}
+                rules={[{ required: true, message: 'Пожалуйста, введите описание' }]}
             >
-                < Input placeholder="Введите описание"/>
+                <Input placeholder="Введите описание" />
             </Form.Item>
             <Form.Item
-                name="price"
-                rules={[{required: true, message: 'Пожалуйста, введите стартовую цену'}]}
+                name="startPrice"
+                rules={[{ required: true, message: 'Пожалуйста, введите стартовую цену' }]}
             >
-                < Input placeholder="Введите стартовую цену"/>
+                <Input placeholder="Введите стартовую цену" />
             </Form.Item>
             <Form.Item
-                name="subject"
-                rules={[{required: true, message: 'Пожалуйста, введите предмет'}]}
+                name="subjectName"
+                rules={[{ required: true, message: 'Пожалуйста, выберите предмет' }]}
             >
-                < Input placeholder="Введите название предмета"/>
+                <Select placeholder="Выберите предмет">
+                    {subjects.map((subject, index) => (
+                        <Option key={index} value={subject.name}>{subject.name}</Option>
+                    ))}
+                </Select>
             </Form.Item>
             <Form.Item>
                 <Button type="primary" htmlType="submit">

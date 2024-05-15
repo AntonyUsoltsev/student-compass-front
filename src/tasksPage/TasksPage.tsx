@@ -8,12 +8,16 @@ import OffersPage from "./OffersPage";
 const TasksPage: React.FC = () => {
     const [activeIndexes, setActiveIndexes] = useState<number[]>([]);
     const [tasks, setTasks] = useState<any[]>([]);
-    const [subjects, setSubjects] = useState<any[]>([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
 
     useEffect(() => {
-        PostService.getTasks().then((response: any) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            message.warning('Чтобы посмотреть задачи необходимо авторизоваться.');
+            return;
+        }
+        PostService.getTasks(token).then((response: any) => {
             setTasks(response.data);
         });
     }, []);
@@ -28,26 +32,30 @@ const TasksPage: React.FC = () => {
     const showModal = () => {
         setIsModalVisible(true);
     };
+    const closeModal = () => {
+        setIsModalVisible(false);
+    };
+
 
     const handleCancel = () => {
         setIsModalVisible(false);
     };
 
     const handleAddTask = (values: any) => {
-        const {title, description, startPrice, subject} = values;
+        const {title, description, startPrice, subjectName} = values;
         const token = localStorage.getItem('token');
 
         // Проверка наличия токена
         if (!token) {
-            message.warning('Чтобы добавить задачу, необходимо авторизоваться.');
+            message.warning('Чтобы добавить задачу необходимо авторизоваться.');
             return;
         }
 
-        PostService.createTask(title, description, startPrice, subject, token)
+        PostService.createTask(title, description, startPrice, subjectName, token)
             .then((response: any) => {
-                setTasks([...tasks, response.data.materials[0]]);
-                form.resetFields();
+                setTasks([...tasks, response.data]);
                 message.success('Задача успешно добавлена.');
+                closeModal()
             })
             .catch(error => {
                 console.error('Ошибка при добавлении задач:', error);
@@ -61,7 +69,6 @@ const TasksPage: React.FC = () => {
                 Добавить новую задачу
             </Button>
 
-            {/* Модальное окно для ввода нового материала */}
             <Modal
                 title="Добавить новую задачу"
                 visible={isModalVisible}
@@ -78,9 +85,14 @@ const TasksPage: React.FC = () => {
                         onClick={() => handleAccordionClick(index)}
                     >
                         {task.title}
+                        {task.createByCurrentUser &&
+                            <span style={{color: 'green', marginRight: '20px'}}>Ваша задача</span>}
                         <i className="fas fa-angle-down"></i>
                     </button>
-                    <div className="panel" style={{display: activeIndexes.includes(index) ? "block" : "none", backgroundColor: " #e0e0e0"}}>
+                    <div className="panel" style={{
+                        display: activeIndexes.includes(index) ? "block" : "none",
+                        backgroundColor: " #e0e0e0"
+                    }}>
                         <p style={{marginBottom: "20px"}}>Описание: {task.description}</p>
                         <p style={{marginBottom: "20px"}}>Стартовая цена: {task.startPrice}</p>
                         <p style={{marginBottom: "20px"}}>Предмет: {task.subjectName}</p>

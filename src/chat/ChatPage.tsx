@@ -1,18 +1,15 @@
 import React, {useState, useEffect} from "react";
 import "./ChatPage.css";
 import PostService from "../postService/PostService";
-import {Avatar, message} from "antd"; // Подключаем файл стилей для страницы чата
-
+import {Avatar, message} from "antd";
 const ChatPage: React.FC = () => {
-    // Состояния для списка пользователей, последних чатов, выбранного чата и текста сообщения
-    const [chats, setChats] = useState([]);
-    const [selectedChat, setSelectedChat] = useState(null);
+    const [chats, setChats] = useState<any[]>([]);
+    const [selectedChat, setSelectedChat] = useState<any>();
     const [messageText, setMessageText] = useState("");
+    const [lastMessages, setLastMessages] = useState<any[]>([]);
 
-    // Функция для загрузки данных (пользователей и чатов) из базы данных
     useEffect(() => {
         const token = localStorage.getItem('token');
-        console.log(token)
         if (!token) {
             message.warning('Чтобы просмотреть чат, необходимо авторизоваться.');
             return;
@@ -22,19 +19,26 @@ const ChatPage: React.FC = () => {
         });
     }, []);
 
-
-    const handleSelectedChatClick = (chat: any) => {
-        console.log(chat);
-        setSelectedChat(chat);
-
+    const getMessages = () => {
+        if (selectedChat) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                message.warning('Чтобы просмотреть сообщения, необходимо авторизоваться.');
+                return;
+            }
+            PostService.getLastMessages(selectedChat.id, token).then((response: any) => {
+                setLastMessages(response.data);
+            });
+        }
     }
 
-    // Функция для отправки сообщения
+    const handleSelectedChatClick = (chat: any) => {
+        setSelectedChat(chat);
+        getMessages()
+    }
+
     const sendMessage = () => {
-        // Ваш код для отправки сообщения в выбранный чат
-        // Пример:
-        // sendMessagetoDatabase(selectedChat, messageText);
-        // Очищаем поле ввода после отправки сообщения
+        // PostService.putMessage(selectedChat.id, )
         setMessageText("");
     };
 
@@ -52,26 +56,21 @@ const ChatPage: React.FC = () => {
                 </ul>
             </div>
 
-
             <div className="chat-window">
                 {selectedChat && (
                     <div>
-                        {/* Ваш код для отображения сообщений выбранного чата */}
-                        {/* Пример:
-                        {selectedChat.messages.map((message, index) => (
+                        {lastMessages.map((message, index) => (
                             <div key={index} className="message">
-                                {message.sender}: {message.text}
+                                <Avatar>{message.userName[0]}</Avatar>
+                                <span>{message.userName}: {message.text}</span>
                             </div>
                         ))}
-                        */}
-                        {/* Поле для ввода сообщения */}
                         <input
                             type="text"
                             value={messageText}
                             onChange={(e) => setMessageText(e.target.value)}
                             placeholder="Введите сообщение..."
                         />
-                        {/* Кнопка для отправки сообщения */}
                         <button onClick={sendMessage}>Отправить</button>
                     </div>
                 )}
