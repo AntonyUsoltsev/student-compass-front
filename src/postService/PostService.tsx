@@ -206,10 +206,10 @@ export default class PostService {
     }
 
 
-    static async getLastMessages(id: any, token: string) {
-        console.log(`http://localhost:8080/chat/all`)
+    static async getLastMessages(id: any, token: string, numberPage: any, sizePage: any) {
+        console.log(`http://localhost:8080/chat?chatId=${id}&numberPage=${numberPage}&sizePage=${sizePage}`)
         try {
-            const value = await axios.get(`http://localhost:8080/chat?chatId=${id}`, {
+            const value = await axios.get(`http://localhost:8080/chat?chatId=${id}&numberPage=${numberPage}&sizePage=${sizePage}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -221,21 +221,22 @@ export default class PostService {
         }
     }
 
-    static async putMessage(id: any, token: string, text: any) {
-        console.log(`http://localhost:8080/chat/all`)
+    static async postMessage(id: any, text: any, token: any) {
+        console.log(`http://localhost:8080/chat/new_message`)
         try {
-            const value = await axios.put(`http://localhost:8080/chat`,
-                {}, {
+            const value = await axios.post(`http://localhost:8080/chat/new_message`,
+                {
+                    chatId: id,
+                    text: text
+                }, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
             console.log(value)
-            return value;
+
         } catch (error) {
             this.errorHandler(error);
         }
     }
-
-
 }

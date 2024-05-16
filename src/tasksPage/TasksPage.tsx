@@ -37,7 +37,9 @@ const TasksPage: React.FC = () => {
     const filterTasksByCurrentUser = (task: any) => {
         return !showMyTasks || task.createByCurrentUser;
     };
-
+    const filterCloseTasks = (tasks:any) => {
+        return !tasks.isClose;
+    }
     const handleChangeSubject = (value: string) => {
         setSelectedSubject(value === '' ? null : value);
     };
@@ -82,6 +84,8 @@ const TasksPage: React.FC = () => {
             });
     };
 
+
+
     return (
         <div>
             <div style={{marginBottom: '25px', display: 'flex', alignItems: 'center'}}>
@@ -116,7 +120,7 @@ const TasksPage: React.FC = () => {
                 <TaskForm onFinish={handleAddTask}/>
             </Modal>
 
-            {tasks.filter(filterTasksBySubject).filter(filterTasksByCurrentUser).map((task, index) => (
+            {tasks.filter(filterCloseTasks).filter(filterTasksBySubject).filter(filterTasksByCurrentUser).map((task, index) => (
                 <div key={index}>
                     <button
                         className={`accordion ${activeIndexes.includes(index) ? "active" : ""}`}
