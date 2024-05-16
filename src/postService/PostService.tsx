@@ -190,6 +190,22 @@ export default class PostService {
         }
     }
 
+    static async closeTask(taskId: any, token: string) {
+        console.log(`http://localhost:8080/student_compass/close_task?taskId=${taskId}`)
+        try {
+            const value = await axios.post(`http://localhost:8080/student_compass/close_task?taskId=${taskId}`,
+                {}, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+            console.log(value)
+
+        } catch (error) {
+            this.errorHandler(error);
+        }
+    }
+
     static async getChats(token: string) {
         console.log(`http://localhost:8080/chat/all`)
         try {
@@ -238,5 +254,26 @@ export default class PostService {
         } catch (error) {
             this.errorHandler(error);
         }
+    }
+
+
+    static async createChat(title: any, id: any, token: string) {
+        console.log(`http://localhost:8080/chat/`)
+        try {
+            const value = await axios.post(`http://localhost:8080/chat`,
+                {
+                    name: title,
+                    userIds: [id]
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+            console.log(value)
+
+        } catch (error) {
+            this.errorHandler(error);
+        }
+
     }
 }

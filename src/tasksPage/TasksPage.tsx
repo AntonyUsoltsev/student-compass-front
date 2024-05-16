@@ -37,7 +37,7 @@ const TasksPage: React.FC = () => {
     const filterTasksByCurrentUser = (task: any) => {
         return !showMyTasks || task.createByCurrentUser;
     };
-    const filterCloseTasks = (tasks:any) => {
+    const filterCloseTasks = (tasks: any) => {
         return !tasks.isClose;
     }
     const handleChangeSubject = (value: string) => {
@@ -83,7 +83,6 @@ const TasksPage: React.FC = () => {
                 message.error('Ошибка при добавлении задачи. Пожалуйста, попробуйте еще раз.');
             });
     };
-
 
 
     return (
@@ -139,7 +138,7 @@ const TasksPage: React.FC = () => {
                         <p style={{marginBottom: "20px"}}>Описание: {task.description}</p>
                         <p style={{marginBottom: "20px"}}>Стартовая цена: {task.startPrice}</p>
                         <p style={{marginBottom: "20px"}}>Предмет: {task.subjectName}</p>
-                        <OffersPage taskId={task.id} createByCurrentUser={task.createByCurrentUser} />
+                        <OffersPage task={task} createByCurrentUser={task.createByCurrentUser}/>
                     </div>
                 </div>
             ))}
